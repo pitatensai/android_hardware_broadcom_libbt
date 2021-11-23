@@ -322,12 +322,14 @@ void userial_vendor_set_baud(uint8_t userial_baud)
     if(USERIAL_VENDOR_SET_BAUD_DELAY_US > 0) {
 	usleep(USERIAL_VENDOR_SET_BAUD_DELAY_US);
     }
+    tcflush(vnd_userial.fd, TCIOFLUSH);
 
     userial_to_tcio_baud(userial_baud, &tcio_baud);
 
     cfsetospeed(&vnd_userial.termios, tcio_baud);
     cfsetispeed(&vnd_userial.termios, tcio_baud);
     tcsetattr(vnd_userial.fd, TCSANOW, &vnd_userial.termios);
+    tcflush(vnd_userial.fd, TCIOFLUSH);
 }
 
 /*******************************************************************************
